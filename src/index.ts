@@ -1,12 +1,14 @@
+import './lib/db';
 import express from 'express';
+import cors from 'cors';
+import routers from './routers';
 
 const app = express();
 const port = 5000;
 
-app.get('/', (req, res) => {
-  res.send('Hello, TypeScript Express!');
-});
+app.use(express.json());
+app.use(cors())
 
-app.listen(port, () => {
-  console.log(`Server listen on ${port}`);
-});
+app.use('/api', routers)
+
+app.listen(port, () => console.log(`Server listen on ${port}`));
