@@ -4,7 +4,7 @@ import cors from 'cors';
 import routers from './routers';
 
 const app = express();
-const port = 5000;
+const port = 80;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
