@@ -5,8 +5,8 @@ interface IUser extends mongoose.Document {
     nik: string;
     name: string;
     email: string;
-    avatar: Buffer;
-    // ktp: Buffer;
+    avatar: string;
+    ktp: string;
     password: string;
 }
 
@@ -16,10 +16,13 @@ const userSchema = new mongoose.Schema<IUser>({
     email: String,
     password: String,
     avatar: {
-        type: Buffer,
+        type: String,
+        default: 'blank-avatar.png'
+    },
+    ktp: {
+        type: String,
         required: true
     },
-    // ktp: Buffer,
 }, {
     versionKey: false,
     timestamps: true,

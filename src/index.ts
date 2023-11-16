@@ -12,7 +12,7 @@ app.use(cors())
 
 app.get("/", async (req: any, res: any) => {
     res.json({
-        url: 'librify-api.up.railway.app/api',
+        url: 'http://52.65.105.20:5000/',
         authorization: {
             Bearer: 'secretpassword',
         },

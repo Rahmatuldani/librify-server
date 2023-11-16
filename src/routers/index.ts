@@ -13,15 +13,12 @@ routers.use('/auth', authRouter);
 routers.use('/users', userRouter);
 routers.use('/books', bookRouter);
 routers.use('/borrows', borrowRoute);
-routers.post('/uploads', (req: any, res: any) => {    
-    const defaultAvatar = path.join(__dirname, '../public', 'blank-avatar.png')
+routers.get('/images/avatar/:id', (req, res) => {
+    const { id } = req.params;
     try {
-        const data = fs.readFileSync(defaultAvatar);
-        const bufferAvatar = Buffer.from(data)
         
-        return response(res, { message: 'buffer image success', data: {bufferAvatar}})
     } catch (error) {
-        return response(res, { status: 500, message: `error buffer image ${error}`})
+        
     }
 })
 
