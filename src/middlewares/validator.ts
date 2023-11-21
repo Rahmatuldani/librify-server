@@ -1,4 +1,4 @@
-import { check, validationResult } from "express-validator";
+import { body, check, validationResult } from "express-validator";
 import { UserModel } from "../models/user";
 import response from "../utils/response";
 import { BookModel } from "../models/book";
@@ -50,7 +50,7 @@ const validateRegister = [
 ]
 
 const validateBook = [
-    check('isbn').not().isEmpty().withMessage('ISBN is required')
+    body('isbn').not().isEmpty().withMessage('ISBN is required')
     .custom(async (value) => {
         const book = await BookModel.findOne({ isbn: value });
         if (book) {
@@ -69,14 +69,6 @@ const validateBook = [
 
     check('price').not().isEmpty().withMessage('Price is required'),
     check('price').isNumeric().withMessage('Price must be a number'),
-    
-    (req: any, res: any, next: any) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return response(res, { status: 400, message: errors.array()[0].msg })
-        }
-        next();
-    }
 ]
 
 const validateBorrow = [

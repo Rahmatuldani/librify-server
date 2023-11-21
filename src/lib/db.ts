@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
+require('dotenv').config();
 
-mongoose.connect('mongodb://52.65.105.20:27017/librify');
+const url: string = `${process.env.MONGODB_URI}` || 'mongodb://20.2.89.234:27017/librify';
+
+mongoose.connect(url);
 
 const database = mongoose.connection;
 

@@ -2,9 +2,10 @@ import './lib/db';
 import express from 'express';
 import cors from 'cors';
 import routers from './routers';
+require('dotenv').config();
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
@@ -12,7 +13,7 @@ app.use(cors())
 
 app.get("/", async (req: any, res: any) => {
     res.json({
-        url: 'http://52.65.105.20:5000/',
+        url: 'http://52.65.105.20:5000/api',
         authorization: {
             Bearer: 'secretpassword',
         },

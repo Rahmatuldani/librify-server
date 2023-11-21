@@ -2,6 +2,7 @@ import fs from 'fs';
 import { BookModel, IBook } from "../models/book"
 import response from "../utils/response";
 import path from 'path';
+import { validationResult } from 'express-validator';
 
 async function getBooks(req: any, res:any) {
     try {
@@ -14,6 +15,11 @@ async function getBooks(req: any, res:any) {
 }
 
 async function createBook(req: any, res: any) {
+    const err = validationResult(req);
+    if (!err.isEmpty()) {
+        return response(res, { status: 400, message: `Error validation : ${err.array()[0].msg}` })
+    }
+
     const {
         isbn, year, title, genre, author, publisher, desc, price,
     } = req.body;
