@@ -1,4 +1,4 @@
-import './lib/db';
+import './config/db';
 import express from 'express';
 import cors from 'cors';
 import routers from './routers';
@@ -11,9 +11,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
-app.get("/", async (req: any, res: any) => {
+app.get('/', async (req: any, res: any) => {
     res.json({
-        url: 'http://52.65.105.20:5000/api',
+        url: 'http://20.2.89.234:5000/api',
         authorization: {
             Bearer: 'secretpassword',
         },
@@ -32,10 +32,10 @@ app.get("/", async (req: any, res: any) => {
                     path: '/register',
                     method: 'POST',
                     body: {
-                        nik: 'type string, required',
                         name: 'type string, required',
                         email: 'type string, email, required',
-                        password: 'type string, min length 6 characters long, required'
+                        password: 'type string, min length 6 characters long, required',
+                        ktp: 'type file'
                     }
                 }
             },
@@ -55,14 +55,15 @@ app.get("/", async (req: any, res: any) => {
                     method: 'POST',
                     authorization: true,
                     body: {
-                        isbn: "type number, unique, required",
-                        year: "type number, required",
-                        title: "type string, required",
-                        genre: "type string[], required",
-                        author: "type string[], required",
-                        publisher: "type string, required",
-                        desc: "type string, required",
-                        price: "type number, required"
+                        isbn: 'type number, unique, required',
+                        year: 'type number, required',
+                        title: 'type string, required',
+                        genre: 'type string[], required',
+                        author: 'type string[], required',
+                        publisher: 'type string, required',
+                        desc: 'type string, required',
+                        price: 'type number, required',
+                        poster: 'type file, required'
                     }
                 }
             },
@@ -76,9 +77,9 @@ app.get("/", async (req: any, res: any) => {
                     method: 'POST',
                     authorization: true,
                     body: {
-                        userId: "type string, required",
-                        bookId: "type string, required",
-                        quantity: "type number, required"
+                        userId: 'type string, required',
+                        bookId: 'type string, required',
+                        quantity: 'type number, required'
                     }
                 }
             }

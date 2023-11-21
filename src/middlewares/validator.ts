@@ -25,8 +25,6 @@ const validateLogin = [
 ]
 
 const validateRegister = [
-    check('nik').not().isEmpty().withMessage('NIK is required'),
-
     check('name').not().isEmpty().withMessage('Name is required'),
 
     check('email').not().isEmpty().withMessage('Email is required'),

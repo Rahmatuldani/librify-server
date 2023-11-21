@@ -2,16 +2,16 @@ import mongoose from "mongoose";
 
 interface IUser extends mongoose.Document {
     _id: mongoose.Types.ObjectId;
-    nik: string;
     name: string;
     email: string;
     avatar: string;
     ktp: string;
     password: string;
+    verified: boolean;
+    verificationToken: string;
 }
 
 const userSchema = new mongoose.Schema<IUser>({
-    nik: String,
     name: String,
     email: String,
     password: String,
@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema<IUser>({
         type: String,
         required: true
     },
+    verified: {
+        type: Boolean,
+        default: false
+    },
+    verificationToken: String,
 }, {
     versionKey: false,
     timestamps: true,
