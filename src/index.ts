@@ -31,18 +31,37 @@ app.get('/', async (req: any, res: any) => {
                 register: {
                     path: '/register',
                     method: 'POST',
+                    header: {
+                        ContentType: 'multipart/form-data'
+                    },
                     body: {
                         name: 'type string, required',
                         email: 'type string, email, required',
                         password: 'type string, min length 6 characters long, required',
-                        ktp: 'type file'
+                        ktp: 'type file, required'
+                    }
+                },
+                forgotPassword: {
+                    path: '/forgotpassword',
+                    method: 'POST',
+                    body: {
+                        email: 'type string, required'
                     }
                 }
             },
             users: {
+                path: '/users',
                 getUsers: {
-                    path: '/users',
+                    path: '/',
                     method: 'GET'
+                },
+                updatePassword: {
+                    path: '/:id/password',
+                    method: 'PUT',
+                    body: {
+                        password: 'type string, required',
+                        newPassword: 'type string, required'
+                    }
                 }
             },
             books: {
