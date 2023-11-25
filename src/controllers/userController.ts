@@ -76,21 +76,13 @@ async function deleteUsers(req: any, res: any) {
 
         const ktpPath = path.join(__dirname, '../uploads/ktp', user.ktp);
 
-        fs.stat(ktpPath, (err, stats) => {
-            if (err) {
-                if (err.code === 'ENOENT') {
-                    return response(res, { status: 404, message: 'File not found' });
-                } else {
-                    return response(res, { status: 500, message: `${err}`});
-                }
-            }
-
+        if (fs.existsSync(ktpPath)) {
             fs.unlink(ktpPath, (err) => {
                 if (err) {
                     return response(res, { status: 500, message: `${err}`});
                 }
             });
-        });
+        }
 
         await UserModel.findByIdAndDelete(id);
 

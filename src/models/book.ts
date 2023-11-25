@@ -10,7 +10,7 @@ interface IBook extends mongoose.Document {
   publisher: string;
   desc: string;
   price: number;
-  // poster: string;
+  poster: string;
 }
 
 const BookSchema: mongoose.Schema = new mongoose.Schema<IBook>({
@@ -25,7 +25,7 @@ const BookSchema: mongoose.Schema = new mongoose.Schema<IBook>({
   publisher: String,
   desc: String,
   price: Number,
-  // poster: String,
+  poster: String,
 }, {
   versionKey: false,
   timestamps: true,
