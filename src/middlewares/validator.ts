@@ -67,6 +67,13 @@ const validateBook = [
 
     check('price').not().isEmpty().withMessage('Price is required'),
     check('price').isNumeric().withMessage('Price must be a number'),
+    (req: any, res: any, next: any) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return response(res, { status: 400, message: errors.array()[0].msg })
+        }
+        next();
+    }
 ]
 
 const validateBorrow = [
