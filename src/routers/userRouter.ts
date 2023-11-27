@@ -11,7 +11,7 @@ import authorization from '../middlewares/authorization';
 
 const userRouter = express.Router();
 
-userRouter.get('/', getUsers);
+userRouter.get('/', authorization, getUsers);
 userRouter.put('/:id/password', updatePassword);
 userRouter.get('/:id/avatar', getAvatar);
 userRouter.get('/:id/ktp', getKtp);

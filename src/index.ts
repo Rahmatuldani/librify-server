@@ -53,7 +53,8 @@ app.get('/', async (req: any, res: any) => {
                 path: '/users',
                 getUsers: {
                     path: '/',
-                    method: 'GET'
+                    method: 'GET',
+                    authorization: true,
                 },
                 updatePassword: {
                     path: '/:id/password',
@@ -62,6 +63,10 @@ app.get('/', async (req: any, res: any) => {
                         password: 'type string, required',
                         newPassword: 'type string, required'
                     }
+                },
+                getAvatar: {
+                    path: '/:avatar/avatar',
+                    methot: 'GET',
                 }
             },
             books: {
@@ -84,6 +89,10 @@ app.get('/', async (req: any, res: any) => {
                         price: 'type number, required',
                         poster: 'type file, required'
                     }
+                },
+                getPoster: {
+                    path: '/:poster/poster',
+                    method: 'GET'
                 }
             },
             borrows: {
