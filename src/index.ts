@@ -43,9 +43,16 @@ app.get('/', async (req: any, res: any) => {
                 },
                 forgotPassword: {
                     path: '/forgotpassword',
-                    method: 'POST',
+                    method: 'PUT',
                     body: {
                         email: 'type string, required'
+                    }
+                },
+                changePassword: {
+                    path: '/changepassword/:token',
+                    method: 'PUT',
+                    body: {
+                        password: 'type string, required'
                     }
                 }
             },

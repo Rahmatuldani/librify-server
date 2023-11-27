@@ -61,7 +61,57 @@ async function login(req: any, res: any) {
     }
 }
 
+async function forgotPassword(req: any, res: any) {
+    const { email } = req.body;
+
+    if(!email) {
+        return response(res, { status: 400, message: 'Email is required' });
+    }
+
+    try {
+        const user: IUser | null = await UserModel.findOne({ email: email })
+
+        if(!user) {
+            return response(res, { status: 404, message: 'User not found' });
+        }
+
+        const token = uuidv4();
+        user.verificationToken = token;
+        await user.save();
+
+        const HOST = 'http://localhost';
+        const PORT = 5173
+        const verifyLink = `${HOST}:${PORT}/api/auth/forgotpassword?token=${token}`;
+        await sendVerification(email, verifyLink);
+
+        return response(res, { message: 'Forgot password success, Check your email for change password instructions.' })
+    } catch (error) {
+        return response(res, { status: 500, message: `Forgot password failed ${error}` });
+    }
+}
+
+async function changePassword(req: any, res: any) {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    try {
+        const user = await UserModel.findOne({ verificationToken: token });
+
+        if (!user) {
+            return response(res, { status: 404, message: 'Invalid token' });
+        }
+
+        const encryptPass = Encrypt(password);
+        user.password = encryptPass;
+        return response(res, { message: 'Change password success' })
+    } catch (error) {
+        return response(res, { status: 500, message: `Change password failed ${error}` });
+    }
+}
+
 export { 
     login,
-    register
+    register,
+    forgotPassword,
+    changePassword
 };
