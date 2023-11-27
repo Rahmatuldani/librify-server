@@ -73,9 +73,57 @@ async function getPoster(req: any, res: any) {
     }
 }
 
+async function updateBook(req: any, res: any) {
+    const { id } = req.params;
+
+    try {
+        const book = await BookModel.findOne({ _id: id })
+
+        if (!book) {
+            return response(res, { status: 404, message: 'Book not found' });
+        }
+
+        await BookModel.findByIdAndUpdate({ _id: id }, req.body);
+
+        return response(res, { message: 'Update book success' })
+    } catch (error) {
+        return response(res, { status: 500, message: `Update book failed ${error}` });
+    }
+}
+
+async function changePoster(req: any, res: any) {
+    const { id } = req.params;
+
+    try {
+        const book = await BookModel.findOne({ _id: id });
+
+        if(!book) {
+            return response(res, { status: 404, message: 'Book not found' });
+        }
+
+        const file = path.join(__dirname, '../uploads/poster/', book.poster)
+        if (fs.existsSync(file)) {
+            fs.unlink(file, (err) => {
+                if (err) {
+                    return response(res, { status: 500, message: `${err}`});
+                }
+            });
+        }
+
+        book.poster = req.file.filename;
+        await book.save();
+
+        return response(res, { message: 'Change poster success' })
+    } catch (error) {
+        return response(res, { status: 500, message: `Change poster failed ${error}` });
+    }
+}
+
 export {
     getBooks,
     createBook,
     deleteBook,
-    getPoster
+    getPoster,
+    updateBook,
+    changePoster
 }
