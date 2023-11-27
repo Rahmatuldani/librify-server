@@ -74,6 +74,13 @@ app.get('/', async (req: any, res: any) => {
                 getAvatar: {
                     path: '/:avatar/avatar',
                     methot: 'GET',
+                },
+                updateAvatar: {
+                    path: '/:id/changeAvatar',
+                    method: 'PUT',
+                    body: {
+                        avatar: 'type file, required'
+                    }
                 }
             },
             books: {

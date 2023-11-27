@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema<IUser>({
     password: String,
     avatar: {
         type: String,
-        default: 'blank-avatar.png'
+        default: null
     },
     ktp: {
         type: String,

@@ -13,8 +13,9 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         const fileExtension = path.extname(file.originalname);
-        const id = req.body.email ? req.body.email : req.body.isbn;
-        cb(null, file.fieldname + '-' + id + fileExtension);
+        const id = req.body.email ? req.body.email : req.body.isbn ? req.body.isbn : req.params['id'];
+        const random = Math.round(Math.random() * 1e9)
+        cb(null, file.fieldname + '-' + id + random + fileExtension);
     },
 });
 

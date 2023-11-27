@@ -118,11 +118,46 @@ async function getKtp(req: any, res: any) {
     }
 }
 
+async function changeAvatar(req: any, res: any) {
+    const { id } = req.params;
+
+    if (!id) {
+        return response(res, { status: 400, message: 'User ID is required' });
+    }
+
+    try {
+        const user = await UserModel.findOne({ _id: id })
+
+        if(!user) {
+            return response(res, { status: 404, message: 'User not found' });
+        }
+
+        if (user.avatar !== null) {
+            const file = path.join(__dirname, '../uploads/avatar/', user.avatar)
+            if (fs.existsSync(file)) {
+                fs.unlink(file, (err) => {
+                    if (err) {
+                        return response(res, { status: 500, message: `${err}`});
+                    }
+                });
+            }
+        }
+
+        user.avatar = req.file.filename;
+        await user.save();
+
+        return response(res, { message: 'Change avatar success' })
+    } catch (error) {
+        return response(res, { status: 500, message: `Change avatar failed ${error}` });
+    }
+}
+
 export {
     getUsers,
     deleteUsers,
     getAvatar,
     getKtp,
     updatePassword,
-    verifyEmail
+    verifyEmail,
+    changeAvatar
 }
