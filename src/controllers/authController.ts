@@ -39,8 +39,16 @@ async function login(req: any, res: any) {
     try {
         const user: IUser | null = await UserModel.findOne({ email })
 
+        if (!user) {
+            return response(res, { status: 404, message: 'User not found' })
+        }
+        
         if (!user?.verified) {
-            return response(res, { status: 400, message: 'Your account not verified. Please check your email or call administrator' })
+            return response(res, { status: 400, message: 'Your account not verified. Please check your email' })
+        }
+        
+        if (!user?.adminVerified) {
+            return response(res, { status: 400, message: 'Your account not verified by administrator. Please contact administrator' })
         }
 
         const encryptPassword = Encrypt(password);
@@ -54,6 +62,7 @@ async function login(req: any, res: any) {
             name: user.name,
             email: user.email,
             avatar: user.avatar,
+            role: user.role,
         }
         return response(res, { message: 'Login success', data: {user: userData} })
     } catch (error) {

@@ -11,14 +11,32 @@ async function verifyEmail(req:any, res: any) {
         const user = await UserModel.findOne({ verificationToken: token })
 
         if (!user) {
-            return response(res, { status: 404, message: 'Invalid verification token' })
+            return response(res, { status: 400, message: 'Invalid verification token' })
         }
 
         user.verified = true;
         user.verificationToken = '';
         await user.save();
 
-        return response(res, { message: 'Accound verified success' })
+        return res.redirect('http://localhost:5173/login')
+    } catch (error) {
+        return response(res, { status: 500, message: `Verify user failed ${error}` })
+    }
+}
+
+async function verifyAdmin(req: any, res: any) {
+    const { id } = req.params;
+    try {
+        const user = await UserModel.findOne({ _id: id })
+
+        if (!user) {
+            return response(res, { status: 404, message: 'User not found' })
+        }
+
+        user.adminVerified = true;
+        await user.save();
+
+        return response(res, { message: 'Verify success' })
     } catch (error) {
         return response(res, { status: 500, message: `Verify user failed ${error}` })
     }
@@ -159,5 +177,6 @@ export {
     getKtp,
     updatePassword,
     verifyEmail,
+    verifyAdmin,
     changeAvatar
 }

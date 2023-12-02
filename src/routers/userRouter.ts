@@ -6,6 +6,7 @@ import {
     getKtp, 
     getUsers, 
     updatePassword, 
+    verifyAdmin, 
     verifyEmail
 } from '../controllers/userController';
 import authorization from '../middlewares/authorization';
@@ -19,6 +20,7 @@ userRouter.put('/:id/changeAvatar', upload.single('avatar'), changeAvatar);
 userRouter.get('/:id/avatar', getAvatar);
 userRouter.get('/:id/ktp', getKtp);
 userRouter.get('/verify', verifyEmail);
+userRouter.get('/verifyAdmin/:id', verifyAdmin);
 userRouter.delete('/:id', authorization, deleteUsers);
 
 export default userRouter;

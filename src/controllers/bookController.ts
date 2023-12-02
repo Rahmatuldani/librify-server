@@ -3,13 +3,53 @@ import response from "../utils/response";
 import path from 'path';
 import fs from 'fs';
 
-async function getBooks(req: any, res:any) {
-    try {
-        const books: IBook[] = await BookModel.find();
-        return response(res, { message: 'Get books success', data: {books} })
+const pageSize = 5;
 
+async function getBooks(req: any, res:any) {
+    const { page } = req.query;
+
+    if (!page) {
+        return response(res, { status: 400, message: 'Need page query' })
+    }
+
+    try {
+        const books: IBook[] = await BookModel.find().skip((page - 1) * pageSize).limit(pageSize);
+
+        return response(res, { message: 'Get books success', data: {books} })
     } catch (error) {
         return response(res, { status: 500, message: `Get books failed ${error}` })
+    }
+}
+
+async function getPages(req: any, res: any) {
+    try {
+        const books = await BookModel.countDocuments();
+        const pages = Math.ceil(books / pageSize)
+    
+        return response(res, { message: 'Get pages success', data: {pages} })
+    } catch (error) {
+        return response(res, { status: 500, message: `Get pages failed ${error}` })
+    }
+}
+
+async function searchBooks(req: any, res: any) {
+    const { search } = req.params;
+
+    try {
+        const books = await BookModel.find({
+            $or: [
+                { title: search },
+                { author: search }
+            ]
+        })
+
+        if (!books) {
+            return response(res, { status: 404, message: 'Book not found' })
+        }
+    
+        return response(res, { message: 'Get book success', data: {books} })
+    } catch (error) {
+        return response(res, { status: 500, message: `Get pages failed ${error}` })
     }
 }
 
@@ -121,6 +161,8 @@ async function changePoster(req: any, res: any) {
 
 export {
     getBooks,
+    getPages,
+    searchBooks,
     createBook,
     deleteBook,
     getPoster,

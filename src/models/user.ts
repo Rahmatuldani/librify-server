@@ -3,16 +3,22 @@ import mongoose from "mongoose";
 interface IUser extends mongoose.Document {
     _id: mongoose.Types.ObjectId;
     name: string;
+    role: string;
     email: string;
     avatar: string;
     ktp: string;
     password: string;
     verified: boolean;
+    adminVerified: boolean;
     verificationToken: string;
 }
 
 const userSchema = new mongoose.Schema<IUser>({
     name: String,
+    role: {
+        type: String,
+        default: 'user',
+    },
     email: String,
     password: String,
     avatar: {
@@ -24,6 +30,10 @@ const userSchema = new mongoose.Schema<IUser>({
         required: true
     },
     verified: {
+        type: Boolean,
+        default: false
+    },
+    adminVerified: {
         type: Boolean,
         default: false
     },
