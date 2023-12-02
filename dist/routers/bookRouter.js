@@ -10,6 +10,7 @@ const authorization_1 = __importDefault(require("../middlewares/authorization"))
 const uploads_1 = require("../uploads");
 const bookRouter = express_1.default.Router();
 bookRouter.get('/', bookController_1.getBooks);
+bookRouter.get('/pages', bookController_1.getPages);
 bookRouter.post('/', authorization_1.default, uploads_1.upload.single('poster'), validator_1.validateBook, bookController_1.createBook);
 bookRouter.put('/:id', authorization_1.default, validator_1.validateUpdateBook, bookController_1.updateBook);
 bookRouter.put('/:id/changePoster', authorization_1.default, uploads_1.upload.single('poster'), bookController_1.changePoster);
