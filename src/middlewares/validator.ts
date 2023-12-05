@@ -67,6 +67,9 @@ const validateBook = [
 
     check('price').not().isEmpty().withMessage('Price is required'),
     check('price').isNumeric().withMessage('Price must be a number'),
+
+    check('stock').not().isEmpty().withMessage('Stock is required'),
+    check('stock').isNumeric().withMessage('Stock must be a number'),
     (req: any, res: any, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

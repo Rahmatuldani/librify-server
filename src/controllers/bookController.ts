@@ -6,11 +6,7 @@ import fs from 'fs';
 const pageSize = 5;
 
 async function getBooks(req: any, res:any) {
-    const { page } = req.query;
-
-    if (!page) {
-        return response(res, { status: 400, message: 'Need page query' })
-    }
+    const { page } = req.query || 1;
 
     try {
         const books: IBook[] = await BookModel.find().skip((page - 1) * pageSize).limit(pageSize);
@@ -55,7 +51,7 @@ async function searchBooks(req: any, res: any) {
 
 async function createBook(req: any, res: any) {
     const {
-        isbn, year, title, genre, author, publisher, desc, price,
+        isbn, year, title, genre, author, publisher, desc, price, stock
     } = req.body;
 
     if (!req.file || req.file.fieldname !== 'poster') {
@@ -64,7 +60,7 @@ async function createBook(req: any, res: any) {
 
     try {
         const book = await BookModel.create({
-            isbn, year, title, genre, author, publisher, desc, price, poster: req.file.filename
+            isbn, year, title, genre, author, publisher, desc, price, poster: req.file.filename, stock
         })
 
         return response(res, { message: 'Create book success', data: {book} })
@@ -159,6 +155,22 @@ async function changePoster(req: any, res: any) {
     }
 }
 
+async function updateStock(req: any, res: any) {
+    const { id } = req.params;
+    const { stock } = req.body;
+    try {
+        const book = await BookModel.findOne({ _id: id })
+        if (!book) {
+            return response(res, { status: 404, message: 'Book not found' })
+        }
+        book.stock = stock;
+        book.save();
+        return response(res, { message: 'Update book stock success' })
+    } catch (error) {
+        return response(res, { status: 500, message: `Error update book stock ${error}` })
+    }
+}
+
 export {
     getBooks,
     getPages,
@@ -167,5 +179,6 @@ export {
     deleteBook,
     getPoster,
     updateBook,
-    changePoster
+    changePoster,
+    updateStock
 }
