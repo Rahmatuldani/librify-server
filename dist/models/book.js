@@ -18,6 +18,7 @@ const BookSchema = new mongoose_1.default.Schema({
     desc: String,
     price: Number,
     poster: String,
+    stock: Number,
 }, {
     versionKey: false,
     timestamps: true,

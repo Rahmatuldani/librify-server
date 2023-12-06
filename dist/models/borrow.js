@@ -11,18 +11,30 @@ const borrowSchema = new mongoose_1.default.Schema({
         ref: 'User',
         required: true,
     },
-    book: [{
-            type: mongoose_1.default.Types.ObjectId,
-            ref: 'Book',
-            required: true,
-        }],
-    quantity: {
-        type: Number,
-        required: true,
-    },
-    date: {
+    books: [
+        {
+            book: {
+                type: mongoose_1.default.Types.ObjectId,
+                ref: 'Book',
+                required: true,
+            },
+            quantity: {
+                type: Number,
+                required: true
+            }
+        }
+    ],
+    startDate: {
         type: Date,
         required: true,
+    },
+    endDate: {
+        type: Date,
+        required: true,
+    },
+    status: {
+        type: String,
+        required: true
     }
 }, {
     versionKey: false,

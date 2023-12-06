@@ -105,8 +105,9 @@ const validateUpdateBook = [
 
 const validateBorrow = [
     check('userId').not().isEmpty().withMessage('User ID is required'),
-    check('bookId').not().isEmpty().withMessage('Book ID is required'),
 
+    check('books').not().isEmpty().withMessage('Books is required'),
+    check('books').isArray().withMessage('Books must be an array'),
     (req: any, res: any, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

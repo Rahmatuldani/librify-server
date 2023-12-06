@@ -1,3 +1,4 @@
+import { BookModel } from "../models/book";
 import { BorrowModel } from "../models/borrow";
 import response from "../utils/response";
 
@@ -17,16 +18,25 @@ async function getBorrow(req: any, res: any) {
 }
 
 async function addBorrow(req: any, res: any) {
-    const { userId, bookId, quantity } = req.body;
+    const { userId, books } = req.body;
     const today = new Date();
-    today.setHours(0,0,0,0);
 
     try {        
+        const endDay = new Date();
         const borrow = await BorrowModel.create({
             user: userId, 
-            book: bookId,
-            quantity: quantity,
-            date: today
+            books: books,
+            startDate: today,
+            endDate: endDay.setDate(today.getDate() + 7),
+            status: 'dibuat'
+        })
+
+        await books.map(async (item: any) => {
+            const book = await BookModel.findOne({ _id: item.book });
+            if (book) {
+                book.stock = book.stock - item.quantity;
+                await book.save();
+            }
         })
         return response(res, { message: `Add borrow success`, data: borrow })
     } catch (error) {

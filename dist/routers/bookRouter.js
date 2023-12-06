@@ -16,4 +16,5 @@ bookRouter.put('/:id', authorization_1.default, validator_1.validateUpdateBook, 
 bookRouter.put('/:id/changePoster', authorization_1.default, uploads_1.upload.single('poster'), bookController_1.changePoster);
 bookRouter.delete('/:id', bookController_1.deleteBook);
 bookRouter.get('/:id/poster', bookController_1.getPoster);
+bookRouter.put('/:id/updateStock', bookController_1.updateStock);
 exports.default = bookRouter;

@@ -75,6 +75,8 @@ const validateBook = [
     (0, express_validator_1.check)('desc').not().isEmpty().withMessage('Description is required'),
     (0, express_validator_1.check)('price').not().isEmpty().withMessage('Price is required'),
     (0, express_validator_1.check)('price').isNumeric().withMessage('Price must be a number'),
+    (0, express_validator_1.check)('stock').not().isEmpty().withMessage('Stock is required'),
+    (0, express_validator_1.check)('stock').isNumeric().withMessage('Stock must be a number'),
     (req, res, next) => {
         const errors = (0, express_validator_1.validationResult)(req);
         if (!errors.isEmpty()) {
@@ -107,7 +109,8 @@ const validateUpdateBook = [
 exports.validateUpdateBook = validateUpdateBook;
 const validateBorrow = [
     (0, express_validator_1.check)('userId').not().isEmpty().withMessage('User ID is required'),
-    (0, express_validator_1.check)('bookId').not().isEmpty().withMessage('Book ID is required'),
+    (0, express_validator_1.check)('books').not().isEmpty().withMessage('Books is required'),
+    (0, express_validator_1.check)('books').isArray().withMessage('Books must be an array'),
     (req, res, next) => {
         const errors = (0, express_validator_1.validationResult)(req);
         if (!errors.isEmpty()) {

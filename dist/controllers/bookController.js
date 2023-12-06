@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changePoster = exports.updateBook = exports.getPoster = exports.deleteBook = exports.createBook = exports.searchBooks = exports.getPages = exports.getBooks = void 0;
+exports.updateStock = exports.changePoster = exports.updateBook = exports.getPoster = exports.deleteBook = exports.createBook = exports.searchBooks = exports.getPages = exports.getBooks = void 0;
 const book_1 = require("../models/book");
 const response_1 = __importDefault(require("../utils/response"));
 const path_1 = __importDefault(require("path"));
@@ -20,10 +20,7 @@ const fs_1 = __importDefault(require("fs"));
 const pageSize = 5;
 function getBooks(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { page } = req.query;
-        if (!page) {
-            return (0, response_1.default)(res, { status: 400, message: 'Need page query' });
-        }
+        const { page } = req.query || 1;
         try {
             const books = yield book_1.BookModel.find().skip((page - 1) * pageSize).limit(pageSize);
             return (0, response_1.default)(res, { message: 'Get books success', data: { books } });
@@ -70,13 +67,13 @@ function searchBooks(req, res) {
 exports.searchBooks = searchBooks;
 function createBook(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { isbn, year, title, genre, author, publisher, desc, price, } = req.body;
+        const { isbn, year, title, genre, author, publisher, desc, price, stock } = req.body;
         if (!req.file || req.file.fieldname !== 'poster') {
             return (0, response_1.default)(res, { status: 400, message: 'Poster is required' });
         }
         try {
             const book = yield book_1.BookModel.create({
-                isbn, year, title, genre, author, publisher, desc, price, poster: req.file.filename
+                isbn, year, title, genre, author, publisher, desc, price, poster: req.file.filename, stock
             });
             return (0, response_1.default)(res, { message: 'Create book success', data: { book } });
         }
@@ -170,3 +167,22 @@ function changePoster(req, res) {
     });
 }
 exports.changePoster = changePoster;
+function updateStock(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { id } = req.params;
+        const { stock } = req.body;
+        try {
+            const book = yield book_1.BookModel.findOne({ _id: id });
+            if (!book) {
+                return (0, response_1.default)(res, { status: 404, message: 'Book not found' });
+            }
+            book.stock = stock;
+            book.save();
+            return (0, response_1.default)(res, { message: 'Update book stock success' });
+        }
+        catch (error) {
+            return (0, response_1.default)(res, { status: 500, message: `Error update book stock ${error}` });
+        }
+    });
+}
+exports.updateStock = updateStock;

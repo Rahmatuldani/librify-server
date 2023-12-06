@@ -28,19 +28,34 @@ database.once('open', () => __awaiter(void 0, void 0, void 0, function* () {
     const collection = database.collection('users');
     const defaultDataExist = yield collection.findOne({ email: 'admin@gmail.com' });
     if (!defaultDataExist) {
-        yield collection.insertOne({
-            name: 'Administrator',
-            role: 'admin',
-            email: 'admin@gmail.com',
-            password: 'apB0ZF415Z+/IVEeElWKs91oOGAXQrAnPrzPjq5h9P7KI1OqX7TnzXsEj2Df1eEQkGz3V3p99a4mboFDpBIrnA==',
-            avatar: null,
-            ktp: '',
-            verified: true,
-            adminVerified: true,
-            verificationToken: '',
-            createdAt: '2023-12-02T03:43:38.363Z',
-            updatedAt: '2023-12-02T03:44:15.150Z'
-        });
+        yield collection.insertMany([
+            {
+                name: 'Administrator',
+                role: 'admin',
+                email: 'admin@gmail.com',
+                password: 'apB0ZF415Z+/IVEeElWKs91oOGAXQrAnPrzPjq5h9P7KI1OqX7TnzXsEj2Df1eEQkGz3V3p99a4mboFDpBIrnA==',
+                avatar: null,
+                ktp: '',
+                verified: true,
+                adminVerified: true,
+                verificationToken: '',
+                createdAt: '2023-12-02T03:43:38.363Z',
+                updatedAt: '2023-12-02T03:44:15.150Z'
+            },
+            {
+                name: 'Testing',
+                role: 'user',
+                email: 'testing@gmail.com',
+                password: 'apB0ZF415Z+/IVEeElWKs91oOGAXQrAnPrzPjq5h9P7KI1OqX7TnzXsEj2Df1eEQkGz3V3p99a4mboFDpBIrnA==',
+                avatar: null,
+                ktp: '',
+                verified: true,
+                adminVerified: true,
+                verificationToken: '',
+                createdAt: '2023-12-02T03:43:38.363Z',
+                updatedAt: '2023-12-02T03:44:15.150Z'
+            }
+        ]);
     }
     console.log('✅ mongodb connected successfully');
 }));

@@ -4,9 +4,13 @@ import { IBook } from "./book";
 
 interface IBorrow extends mongoose.Document {
     user: IUser;
-    book: IBook[];
-    quantity: number;
-    date: Date;
+    books: {
+        book: IBook; 
+        quantity: number;
+    };
+    startDate: Date;
+    endDate: Date;
+    status: string;
 }
 
 const borrowSchema: mongoose.Schema = new mongoose.Schema<IBorrow>({
@@ -15,18 +19,31 @@ const borrowSchema: mongoose.Schema = new mongoose.Schema<IBorrow>({
         ref: 'User',
         required: true,
     },
-    book: [{
-        type: mongoose.Types.ObjectId,
-        ref: 'Book',
-        required: true,
-    }],
-    quantity: {
-        type: Number,
-        required: true,
-    },
-    date: {
+    books: [
+        {
+            book: {
+                type: mongoose.Types.ObjectId,
+                ref: 'Book',
+                required: true,
+            },
+
+            quantity: {
+                type: Number,
+                required: true
+            }
+        }
+    ],
+    startDate: {
         type: Date,
         required: true,
+    },
+    endDate: {
+        type: Date,
+        required: true,
+    },
+    status: {
+        type: String,
+        required: true
     }
 }, {
     versionKey: false,

@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteBorrow = exports.addBorrow = exports.getBorrow = void 0;
+const book_1 = require("../models/book");
 const borrow_1 = require("../models/borrow");
 const response_1 = __importDefault(require("../utils/response"));
 function getBorrow(req, res) {
@@ -35,16 +36,24 @@ function getBorrow(req, res) {
 exports.getBorrow = getBorrow;
 function addBorrow(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { userId, bookId, quantity } = req.body;
+        const { userId, books } = req.body;
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
         try {
+            const endDay = new Date();
             const borrow = yield borrow_1.BorrowModel.create({
                 user: userId,
-                book: bookId,
-                quantity: quantity,
-                date: today
+                books: books,
+                startDate: today,
+                endDate: endDay.setDate(today.getDate() + 7),
+                status: 'dibuat'
             });
+            yield books.map((item) => __awaiter(this, void 0, void 0, function* () {
+                const book = yield book_1.BookModel.findOne({ _id: item.book });
+                if (book) {
+                    book.stock = book.stock - item.quantity;
+                    yield book.save();
+                }
+            }));
             return (0, response_1.default)(res, { message: `Add borrow success`, data: borrow });
         }
         catch (error) {
