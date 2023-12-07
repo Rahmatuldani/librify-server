@@ -22,8 +22,8 @@ async function register(req: any, res: any) {
             verificationToken: token
         })
 
-        const HOST = process.env.APP_HOST || 'http://20.2.89.234';
-        const PORT = process.env.PORT || 5000;
+        const HOST = 'http://localhost';
+        const PORT = 5000;
         const verifyLink = `${HOST}:${PORT}/api/users/verify?token=${token}`;
         await sendVerification(email, verifyLink);
         

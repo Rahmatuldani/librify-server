@@ -13,14 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-require('dotenv').config();
-let url = '';
-if (!process.env.MONGODB_URI) {
-    url = 'mongodb://20.2.89.234:27017/librify';
-}
-else {
-    url = process.env.MONGODB_URI;
-}
+const url = 'mongodb://127.0.0.1:27017/librify';
 mongoose_1.default.connect(url);
 const database = mongoose_1.default.connection;
 database.on('error', console.error.bind(console, '❌ mongodb connection error'));

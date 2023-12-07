@@ -18,13 +18,13 @@ const cors_1 = __importDefault(require("cors"));
 const routers_1 = __importDefault(require("./routers"));
 require('dotenv').config();
 const app = (0, express_1.default)();
-const port = process.env.PORT || 5000;
+const port = 5000;
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)());
 app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.json({
-        url: 'http://20.2.89.234:5000/api',
+        url: 'http://localhost:5000/api',
         authorization: {
             Bearer: 'secretpassword',
         },
@@ -131,8 +131,10 @@ app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     authorization: true,
                     body: {
                         userId: 'type string, required',
-                        bookId: 'type string, required',
-                        quantity: 'type number, required'
+                        books: [{
+                                book: 'type string required',
+                                quantity: 'type number, required'
+                            }],
                     }
                 }
             }

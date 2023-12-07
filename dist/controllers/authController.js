@@ -34,8 +34,8 @@ function register(req, res) {
                 ktp: req.file.filename,
                 verificationToken: token
             });
-            const HOST = process.env.APP_HOST || 'http://20.2.89.234';
-            const PORT = process.env.PORT || 5000;
+            const HOST = 'http://localhost';
+            const PORT = 5000;
             const verifyLink = `${HOST}:${PORT}/api/users/verify?token=${token}`;
             yield (0, email_1.sendVerification)(email, verifyLink);
             return (0, response_1.default)(res, { message: 'Register success, Check your email for verification instructions.' });
