@@ -44,7 +44,7 @@ async function verifyAdmin(req: any, res: any) {
 
 async function getUsers(req: any, res: any) {
     try {
-        const users: IUser[] = await UserModel.find().select('-password -createdAt -updatedAt -ktp');
+        const users: IUser[] = await UserModel.find().select('-password -createdAt -updatedAt');
 
         return response(res, { message: 'Get users success', data: { users } })
     } catch (error) {
