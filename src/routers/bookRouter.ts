@@ -7,7 +7,8 @@ import {
     updateBook, 
     changePoster, 
     getPages, 
-    updateStock 
+    updateStock, 
+    likeBook
 } from '../controllers/bookController';
 import { validateBook, validateUpdateBook } from '../middlewares/validator';
 import authorization from '../middlewares/authorization';
@@ -22,6 +23,7 @@ bookRouter.put('/:id', authorization, validateUpdateBook, updateBook);
 bookRouter.put('/:id/changePoster', authorization, upload.single('poster'), changePoster);
 bookRouter.delete('/:id', deleteBook);
 bookRouter.get('/:id/poster', getPoster);
+bookRouter.post('/:id/:type', likeBook);
 bookRouter.put('/:id/updateStock', updateStock);
 
 export default bookRouter;

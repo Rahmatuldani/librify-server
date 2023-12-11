@@ -11,6 +11,7 @@ interface IBorrow extends mongoose.Document {
     startDate: Date;
     endDate: Date;
     status: string;
+    denda: number;
 }
 
 const borrowSchema: mongoose.Schema = new mongoose.Schema<IBorrow>({
@@ -44,6 +45,10 @@ const borrowSchema: mongoose.Schema = new mongoose.Schema<IBorrow>({
     status: {
         type: String,
         required: true
+    },
+    denda: {
+        type: Number,
+        default: 0
     }
 }, {
     versionKey: false,

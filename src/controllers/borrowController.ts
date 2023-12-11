@@ -2,15 +2,29 @@ import { BookModel } from "../models/book";
 import { BorrowModel } from "../models/borrow";
 import response from "../utils/response";
 
-async function getBorrow(req: any, res: any) {
-    // const { id } = req.params;
-
+async function getAllBorrow(req: any, res: any) {
     try {
         const borrow = await BorrowModel.find()
             .populate({
                 path: 'user',
                 select: 'name'})
-            .populate('book');
+            .populate('books.book');
+        return response(res, { message: 'Get borrow success', data: borrow });
+    } catch (error) {
+        return response(res, { status: 500, message: `Get borrow failed ${error}` });
+    }
+}
+
+async function getBorrow(req: any, res: any) {
+    const { id } = req.params;
+
+    if (!id) {
+        return response(res, { status: 400, message: 'ID is required' })
+    }
+
+    try {
+        const borrow = await BorrowModel.find({ user: id })
+            .populate('books.book');
         return response(res, { message: 'Get borrow success', data: borrow });
     } catch (error) {
         return response(res, { status: 500, message: `Get borrow failed ${error}` });
@@ -53,8 +67,33 @@ async function deleteBorrow(req: any, res: any) {
     }
 }
 
+async function changeStatus(req: any, res: any) {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+        return response(res, { status: 400, message: 'Status is required' })
+    }
+
+    try {
+        const borrow = await BorrowModel.findOne({ _id: id});
+        if (!borrow) {
+            return response(res, { status: 404, message: 'Borrow not found' })
+        }
+
+        borrow.status = status;
+        await borrow.save();
+        return response(res, { message: 'Change status borrow success' })
+
+    } catch (error) {
+        return response(res, { status: 500, message: `Change status borrow failed ${error}` })
+    }
+}
+
 export {
+    getAllBorrow,
     getBorrow,
     addBorrow,
     deleteBorrow,
+    changeStatus,
 }

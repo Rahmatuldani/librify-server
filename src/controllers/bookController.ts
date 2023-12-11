@@ -60,7 +60,7 @@ async function createBook(req: any, res: any) {
 
     try {
         const book = await BookModel.create({
-            isbn, year, title, genre, author, publisher, desc, price, poster: req.file.filename, stock
+            isbn, year, title, genre, author, publisher, desc, price, poster: req.file.filename, stock, likes: []
         })
 
         return response(res, { message: 'Create book success', data: {book} })
@@ -171,6 +171,31 @@ async function updateStock(req: any, res: any) {
     }
 }
 
+async function likeBook(req: any, res: any) {
+    const { id, type } = req.params;
+    const { userId } = req.body;
+
+    try {
+        if (type === 'like') {
+            await BookModel.updateOne(
+                { _id: id },
+                { $addToSet: { likes: { userId } } }
+            )
+        } else if (type === 'unlike') {
+            await BookModel.updateOne(
+                { _id: id },
+                { $pull: { likes: { userId } } }
+            )
+        } else {
+            return response(res, { status: 400, message: 'Type is unknown' })  
+        }
+
+        return response(res, { message: 'Like book success' })  
+    } catch (error) {
+        return response(res, { status: 500, message: `Error update book stock ${error}` })
+    }
+}
+
 export {
     getBooks,
     getPages,
@@ -180,5 +205,6 @@ export {
     getPoster,
     updateBook,
     changePoster,
-    updateStock
+    updateStock,
+    likeBook
 }

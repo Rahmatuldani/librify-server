@@ -81,6 +81,17 @@ app.get('/', async (req: any, res: any) => {
                     body: {
                         avatar: 'type file, required'
                     }
+                },
+                verifyEmail: {
+                    path: '/verify',
+                    method: 'GET'
+                },
+                verifyAdmin: {
+                    path: '/vrifyAdmin/:id',
+                    method: 'GET'
+                },
+                getKtp: {
+                    path: '/:id/ktp'
                 }
             },
             books: {
@@ -107,15 +118,28 @@ app.get('/', async (req: any, res: any) => {
                 getPoster: {
                     path: '/:poster/poster',
                     method: 'GET'
+                },
+                likeBook: {
+                    path: '/:bookId/:type[like or unlike]',
+                    method: 'POST',
+                    body: {
+                        userId: 'type string required'
+                    }
                 }
             },
             borrows: {
-                getBorrows: {
-                    path: '/borrows',
+                path: '/borrows',
+                getAllBorrows: {
+                    path: '/',
                     method: 'GET',
+                    authorizaton: true,
+                },
+                getBorrow: {
+                    path: '/:userId',
+                    method: 'GET'
                 },
                 addBorrow: {
-                    path: '/borrows',
+                    path: '/',
                     method: 'POST',
                     authorization: true,
                     body: {
@@ -124,6 +148,13 @@ app.get('/', async (req: any, res: any) => {
                             book: 'type string required',
                             quantity: 'type number, required'
                         }],
+                    }
+                },
+                changeStatus: {
+                    path: '/:borrowId/changeStatus',
+                    method: 'POST',
+                    body: {
+                        status: 'type string required'
                     }
                 }
             }

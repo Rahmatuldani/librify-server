@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
+import { IUser } from "./user";
 
+interface Like {
+  userId: string
+}
 interface IBook extends mongoose.Document {
   _id: mongoose.Types.ObjectId;
   isbn: number;
@@ -12,6 +16,7 @@ interface IBook extends mongoose.Document {
   price: number;
   poster: string;
   stock: number;
+  likes: Like[];
 }
 
 const BookSchema: mongoose.Schema = new mongoose.Schema<IBook>({
@@ -28,6 +33,15 @@ const BookSchema: mongoose.Schema = new mongoose.Schema<IBook>({
   price: Number,
   poster: String,
   stock: Number,
+  likes: [
+    {
+      userId: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+        required: true
+      }
+    }
+  ]
 }, {
   versionKey: false,
   timestamps: true,
