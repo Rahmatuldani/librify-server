@@ -69,7 +69,7 @@ async function deleteBorrow(req: any, res: any) {
 
 async function changeStatus(req: any, res: any) {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, denda } = req.body;
 
     if (!status) {
         return response(res, { status: 400, message: 'Status is required' })
@@ -79,6 +79,20 @@ async function changeStatus(req: any, res: any) {
         const borrow = await BorrowModel.findOne({ _id: id});
         if (!borrow) {
             return response(res, { status: 404, message: 'Borrow not found' })
+        }
+
+        if (status === 'dikembalikan' || status === 'batal') {
+            borrow.books.map(async (item: any) => {
+                const book = await BookModel.findOne({ _id: item.book });
+                if (book) {
+                    book.stock = book.stock + item.quantity;
+                    await book.save();
+                }
+            })
+        }
+
+        if (status === 'denda') {
+            borrow.denda = denda || 0
         }
 
         borrow.status = status;

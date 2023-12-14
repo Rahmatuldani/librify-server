@@ -2,12 +2,14 @@ import mongoose from "mongoose";
 import { IUser } from "./user";
 import { IBook } from "./book";
 
+interface BooksInterface {
+    book: IBook;
+    quantity: number;
+}
+
 interface IBorrow extends mongoose.Document {
     user: IUser;
-    books: {
-        book: IBook; 
-        quantity: number;
-    };
+    books: BooksInterface[]
     startDate: Date;
     endDate: Date;
     status: string;
