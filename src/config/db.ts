@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
+require('dotenv').config();
 
-const url = 'mongodb://127.0.0.1:27017/librify'
+let url = 'mongodb://127.0.0.1:27017/librify'
+
+if (process.env.MONGODB_URI) {
+  url = process.env.MONGODB_URI
+}
 
 mongoose.connect(url);
 
