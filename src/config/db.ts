@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
 require('dotenv').config();
 
-let url = 'mongodb+srv://rahmatul:rahmatul@online-project.ukbeily.mongodb.net/librify'
+const username = 'librifyAdmin';
+const password = 'librifyAdmin';
+const cluster = 'online-project.ukbeily.mongodb.net'
+const document = 'librify'
+let url = `mongodb+srv://${username}:${password}@${cluster}/${document}`
 
 mongoose.connect(url);
 
