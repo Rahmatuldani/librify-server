@@ -92,7 +92,14 @@ async function changeStatus(req: any, res: any) {
         }
 
         if (status === 'denda') {
-            borrow.denda = denda || 0
+            borrow.denda = denda || 0;
+            borrow.books.map(async (item: any) => {
+                const book = await BookModel.findOne({ _id: item.book });
+                if (book) {
+                    book.stock = book.stock + item.quantity;
+                    await book.save();
+                }
+            })
         }
 
         borrow.status = status;
