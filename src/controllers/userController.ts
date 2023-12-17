@@ -18,7 +18,7 @@ async function verifyEmail(req:any, res: any) {
         user.verificationToken = '';
         await user.save();
 
-        return res.redirect('http://localhost:5173/login')
+        return res.redirect('https://dicoding-capstone.vercel.app')
     } catch (error) {
         return response(res, { status: 500, message: `Verify user failed ${error}` })
     }

@@ -88,9 +88,8 @@ async function forgotPassword(req: any, res: any) {
         user.verificationToken = token;
         await user.save();
 
-        const HOST = 'http://localhost';
-        const PORT = 5173
-        const verifyLink = `${HOST}:${PORT}/api/auth/forgotpassword?token=${token}`;
+        const HOST = 'https://dicoding-capstone.vercel.app';
+        const verifyLink = `${HOST}/forgotpassword?token=${token}`;
         await sendVerification(email, verifyLink);
 
         return response(res, { message: 'Forgot password success, Check your email for change password instructions.' })
